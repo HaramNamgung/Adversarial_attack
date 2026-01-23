@@ -1,0 +1,40 @@
+# 시스템 및 환경 파일
+.bash_history
+.gitconfig
+.ssh/
+.gnupg/
+
+# VS Code 서버 파일
+.vscode-server/
+
+# Python 관련
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# 환경 및 패키지
+.cache/
+.config/
+.dotnet/
+.ipython/
+.local/
+
+# 가상환경
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
