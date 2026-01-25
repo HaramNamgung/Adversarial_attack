@@ -10,7 +10,7 @@ def fgsm_attack(input,epsilon,data_grad):
   # gradient에 대해 sign 함수 적용
   # 공격의 크기를 epsilon으로 조절
   # 한 번에 공격 적용
-  pert_out = input + epsilon*data_grad.sign() 
+  pert_out = input + epsilon*(data_grad.sign()) 
   pert_out = torch.clamp(pert_out, 0, 1)
   return pert_out
 
@@ -20,8 +20,8 @@ def ifgsm_attack(input,epsilon,data_grad):
   # 한 번에 적용하는 공격의 크기
   alpha = epsilon/iter
   pert_out = input
-  for i in range(iter-1):
-    pert_out = pert_out + alpha*data_grad.sign()
+  for i in range(iter):
+    pert_out = pert_out + alpha*(data_grad.sign())
     pert_out = torch.clamp(pert_out, 0, 1)
     # tensor.norm : 텐서의 크기를 계산
     # p = 1, 2, inf 등을 사용할 수 있음
@@ -35,4 +35,16 @@ def ifgsm_attack(input,epsilon,data_grad):
     #pert와 input의 차이가 epsilon보다 크면 중단
     if torch.norm((pert_out-input),p=float('inf')) > epsilon:
       break
+  return pert_out
+
+def pgd_attack(input, epsilon, data_grad): 
+  iters = 10
+  alpha = epsilon / iters
+  pert_out = input
+  for i in range(iters):
+    pert_out = pert_out + alpha*(data_grad.sign())  
+    # pert와 input의 차이가 epsilon보다 크면 projection 수행
+    eta = torch.clamp(pert_out - input, min=-epsilon, max=epsilon)
+    pert_out = torch.clamp(input + eta, min=0, max=1)
+
   return pert_out
